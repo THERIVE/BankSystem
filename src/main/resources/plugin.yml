@@ -1,0 +1,9 @@
+name: BankSystem
+author: THERIVE
+version: 0.1
+main: me.therive.bank.Main
+load: STARTUP
+
+commands:
+  money:
+  pay:
