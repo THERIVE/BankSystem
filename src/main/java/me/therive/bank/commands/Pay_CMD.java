@@ -59,16 +59,19 @@ public class Pay_CMD implements CommandExecutor {
                 }
 
                 if (money > bankPlayer.getMoney()) {
-                    player.sendMessage(plugin.prefix + "§cDu hast nicht genügend Geld, um diesen Betrag zu überweisen!");
+                    player.sendMessage(plugin.prefix + "§cDu hast nicht genügend Geld," +
+                            " um diesen Betrag zu überweisen!");
                     return false;
                 }
 
                 Player target = Bukkit.getPlayer(uuid);
                 if (target != null) {
-                    target.sendMessage(plugin.prefix + "§7Du hast von §e" + player.getName() + "§a " + money + " Euro §7erhalten!");
+                    target.sendMessage(plugin.prefix + "§7Du hast von §e" + player.getName() + "§a "
+                            + money + " Euro §7erhalten!");
                 }
 
-                player.sendMessage(plugin.prefix + "§7Du hast §a" + money + " Euro §7an §e" + name + "§7 überwiesen!");
+                player.sendMessage(plugin.prefix + "§7Du hast §a" + money + " Euro §7an §e"
+                        + name + "§7 überwiesen!");
                 bankPlayer.removeMoney(money);
                 bankPlayer.update();
 
