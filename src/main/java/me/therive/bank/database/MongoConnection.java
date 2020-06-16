@@ -12,8 +12,8 @@ public class MongoConnection {
     private MongoClient mongoClient;
 
     public MongoConnection(String address, String user, String password, String authSource) {
-        this.mongoClient = MongoClients.create(new ConnectionString("mongodb://"+user+":"+
-                password+"@"+address+"/?authSource="+authSource));
+        this.mongoClient = MongoClients.create(new ConnectionString("mongodb://" + user + ":" +
+                password + "@" + address + "/?authSource=" + authSource));
     }
 
     public MongoClient getClient() {

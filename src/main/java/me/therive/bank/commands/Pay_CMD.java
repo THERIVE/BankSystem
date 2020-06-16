@@ -29,24 +29,24 @@ public class Pay_CMD implements CommandExecutor {
 
             if (args.length == 2) {
                 if (player.getName().equalsIgnoreCase(args[0])) {
-                    player.sendMessage(plugin.prefix+"§cDu kannst dir selber kein Geld überweisen!");
+                    player.sendMessage(plugin.prefix + "§cDu kannst dir selber kein Geld überweisen!");
                     return false;
                 }
 
                 UUID uuid = UUIDFetcher.getUUID(args[0]);
                 if (uuid == null) {
-                    player.sendMessage(plugin.prefix+"§cSpieler wurde nicht gefunden!");
+                    player.sendMessage(plugin.prefix + "§cSpieler wurde nicht gefunden!");
                     return false;
                 }
                 String name = UUIDFetcher.getName(uuid);
                 if (name == null) {
-                    player.sendMessage(plugin.prefix+"§cSpieler wurde nicht gefunden!");
+                    player.sendMessage(plugin.prefix + "§cSpieler wurde nicht gefunden!");
                     return false;
                 }
 
                 BankPlayer targetBankPlayer = BankPlayer.findByUuid(uuid);
                 if (targetBankPlayer == null) {
-                    player.sendMessage(plugin.prefix+"§cSpieler wurde nicht gefunden!");
+                    player.sendMessage(plugin.prefix + "§cSpieler wurde nicht gefunden!");
                     return false;
                 }
 
@@ -54,21 +54,21 @@ public class Pay_CMD implements CommandExecutor {
                 try {
                     money = Double.parseDouble(args[1]);
                 } catch (NumberFormatException nfe) {
-                    player.sendMessage(plugin.prefix+"§cEs wurde kein korrekter Wert angegeben!");
+                    player.sendMessage(plugin.prefix + "§cEs wurde kein korrekter Wert angegeben!");
                     return false;
                 }
 
                 if (money > bankPlayer.getMoney()) {
-                    player.sendMessage(plugin.prefix+"§cDu hast nicht genügend Geld, um diesen Betrag zu überweisen!");
+                    player.sendMessage(plugin.prefix + "§cDu hast nicht genügend Geld, um diesen Betrag zu überweisen!");
                     return false;
                 }
 
                 Player target = Bukkit.getPlayer(uuid);
                 if (target != null) {
-                    target.sendMessage(plugin.prefix+"§7Du hast von §e"+player.getName()+"§a "+money+ " Euro §7erhalten!");
+                    target.sendMessage(plugin.prefix + "§7Du hast von §e" + player.getName() + "§a " + money + " Euro §7erhalten!");
                 }
 
-                player.sendMessage(plugin.prefix+"§7Du hast §a"+money+" Euro §7an §e"+name+"§7 überwiesen!");
+                player.sendMessage(plugin.prefix + "§7Du hast §a" + money + " Euro §7an §e" + name + "§7 überwiesen!");
                 bankPlayer.removeMoney(money);
                 bankPlayer.update();
 
@@ -83,7 +83,7 @@ public class Pay_CMD implements CommandExecutor {
                 return false;
             }
         } else {
-            sender.sendMessage(plugin.prefix+"§cDieser Befehl ist nur für Spieler verfügbar!");
+            sender.sendMessage(plugin.prefix + "§cDieser Befehl ist nur für Spieler verfügbar!");
             return false;
         }
     }
@@ -97,6 +97,6 @@ public class Pay_CMD implements CommandExecutor {
 
         Scoreboard scoreboard = player.getScoreboard();
         Team money = scoreboard.getTeam("money");
-        money.setSuffix("§7"+bankPlayer.getMoney()+" Euro");
+        money.setSuffix("§7" + bankPlayer.getMoney() + " Euro");
     }
 }

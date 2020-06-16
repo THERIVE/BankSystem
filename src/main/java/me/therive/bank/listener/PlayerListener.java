@@ -28,11 +28,11 @@ public class PlayerListener implements Listener {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         Team money = scoreboard.registerNewTeam("money");
         money.setPrefix("§aGuthaben§8: §7");
-        money.setSuffix("§7"+bankPlayer.getMoney()+" Euro");
+        money.setSuffix("§7" + bankPlayer.getMoney() + " Euro");
         money.addEntry(ChatColor.RED.toString());
 
         Objective objective = scoreboard.registerNewObjective("scoreboard", "dummy",
-                ChatColor.YELLOW +player.getName());
+                ChatColor.YELLOW + player.getName());
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.getScore(ChatColor.AQUA.toString()).setScore(1);
         objective.getScore(ChatColor.RED.toString()).setScore(0);

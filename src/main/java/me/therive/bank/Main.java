@@ -36,7 +36,7 @@ public class Main extends JavaPlugin {
                 "1234678",
                 "admin");
         mongoDB = new MongoDB(mongoConnection, mongoConnection.getDatabase("THERIVE"),
-                mongoConnection.getCollection("THERIVE","BankSystem"));
+                mongoConnection.getCollection("THERIVE", "BankSystem"));
 
         /** INITIALIZE GENERAL STUFF **/
 
