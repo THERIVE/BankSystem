@@ -39,7 +39,8 @@ public class MongoDB {
     public CompletableFuture<Document> findDocumentAsync(String key, String value) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return Main.EXECUTOR_SERVICE.submit(new FindDocumentCallable(this.mongoCollection, key, value)).get();
+                return Main.getExecutorService().submit
+                        (new FindDocumentCallable(this.mongoCollection, key, value)).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -58,7 +59,8 @@ public class MongoDB {
     public CompletableFuture<List<Document>> getDocumentsFromCollectionAsync() {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return Main.EXECUTOR_SERVICE.submit(new GetDocumentsCallable(this.mongoCollection)).get();
+                return Main.getExecutorService().submit
+                        (new GetDocumentsCallable(this.mongoCollection)).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -78,7 +80,8 @@ public class MongoDB {
     public CompletableFuture insertDocumentAsync(Document document) {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return Main.EXECUTOR_SERVICE.submit(new InsertDocumentCallable(this.mongoCollection, document)).get();
+                return Main.getExecutorService().submit
+                        (new InsertDocumentCallable(this.mongoCollection, document)).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -98,7 +101,8 @@ public class MongoDB {
      */
 
     public Future updateDocumentAsync(String key, String value, Document toUpdate) {
-        return Main.EXECUTOR_SERVICE.submit(new UpdateDocumentCallable(this.mongoCollection, key, value, toUpdate));
+        return Main.getExecutorService().submit
+                (new UpdateDocumentCallable(this.mongoCollection, key, value, toUpdate));
     }
 
     /**
