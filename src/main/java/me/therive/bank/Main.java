@@ -1,7 +1,7 @@
 package me.therive.bank;
 
-import me.therive.bank.commands.Money_CMD;
-import me.therive.bank.commands.Pay_CMD;
+import me.therive.bank.commands.MoneyCommand;
+import me.therive.bank.commands.PayCommand;
 import me.therive.bank.database.MongoConnection;
 import me.therive.bank.database.MongoDB;
 import me.therive.bank.entity.BankPlayer;
@@ -20,42 +20,44 @@ public class Main extends JavaPlugin {
     private MongoConnection mongoConnection;
     public MongoDB mongoDB;
 
-    public static ExecutorService executorService;
+    public final static ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
     private static Main instance;
 
-    public String prefix;
+    public final String PREFIX = "§8[§6Bank§8] §7";
 
     public HashMap<UUID, BankPlayer> bankPlayers;
 
     @Override
     public void onEnable() {
-        /** INITIALIZE DATABASE **/
+        /**
+         * INITIALIZE DATABASE
+         */
         mongoConnection = new MongoConnection(
-                "127.0.0.1",
+                "88.99.62.231",
                 "admin",
-                "1234678",
+                "T6pZUjrRqz0l3LeHx65PQsAjn2uEyF8fmzgJHxCzvUHFtNMyqWAPlqDmScOyweSZ",
                 "admin");
         mongoDB = new MongoDB(mongoConnection, mongoConnection.getDatabase("THERIVE"),
                 mongoConnection.getCollection("THERIVE", "BankSystem"));
 
-        /** INITIALIZE GENERAL STUFF **/
-
-        //STATIC
-        executorService = Executors.newSingleThreadExecutor();
+        /**
+         * INITIALIZE GENERAL STUFF
+         */
         instance = this;
 
-        //NON-STATIC
-        prefix = "§8[§6Bank§8] §7";
-
-        /** INITIALIZE MAPS AND LISTS **/
+        /**
+         * INITIALIZE MAPS AND LISTS
+         */
         this.bankPlayers = new HashMap<>();
 
-        /** REGISTER LISTENER AND COMMANDS **/
+        /**
+         * REGISTER LISTENER AND COMMANDS
+         */
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new PlayerListener(this), this);
 
-        this.getCommand("money").setExecutor(new Money_CMD(this));
-        this.getCommand("pay").setExecutor(new Pay_CMD(this));
+        this.getCommand("money").setExecutor(new MoneyCommand(this));
+        this.getCommand("pay").setExecutor(new PayCommand(this));
     }
 
     public static Main getInstance() {

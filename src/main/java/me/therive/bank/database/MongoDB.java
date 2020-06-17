@@ -12,8 +12,9 @@ import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.function.Consumer;
 
 public class MongoDB {
 
@@ -27,25 +28,96 @@ public class MongoDB {
         this.mongoCollection = mongoCollection;
     }
 
-    public Future<Document> findDocumentAsync(String key, String value) {
-        return Main.executorService.submit(new FindDocumentCallable(this.mongoCollection, key, value));
+    /**
+     * Find asynchronously documents from database
+     *
+     * @param key find by key
+     * @param value find value with key
+     * @return found document from the database
+     */
+
+    public CompletableFuture<Document> findDocumentAsync(String key, String value) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return Main.EXECUTOR_SERVICE.submit(new FindDocumentCallable(this.mongoCollection, key, value)).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            return null;
+        });
     }
 
-    public Future<List<Document>> getDocumentsFromCollectionAsync() {
-        return Main.executorService.submit(new GetDocumentsCallable(this.mongoCollection));
+    /**
+     * Get all documents from collection asynchronously
+     *
+     * @return all documents from collection
+     */
+
+    public CompletableFuture<List<Document>> getDocumentsFromCollectionAsync() {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return Main.EXECUTOR_SERVICE.submit(new GetDocumentsCallable(this.mongoCollection)).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            return null;
+        });
     }
 
-    public Future insertDocumentAsync(Document document) {
-        return Main.executorService.submit(new InsertDocumentCallable(this.mongoCollection, document));
+    /**
+     * Insert single document to database asynchronously
+     *
+     * @param document document to insert
+     * @return information for completed insert
+     */
+
+    public CompletableFuture insertDocumentAsync(Document document) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                return Main.EXECUTOR_SERVICE.submit(new InsertDocumentCallable(this.mongoCollection, document)).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            return null;
+        });
     }
+
+    /**
+     * Update single documents from the database asynchronously
+     *
+     * @param key find by key
+     * @param value find value with key
+     * @param toUpdate document to update
+     * @return information for completed update
+     */
 
     public Future updateDocumentAsync(String key, String value, Document toUpdate) {
-        return Main.executorService.submit(new UpdateDocumentCallable(this.mongoCollection, key, value, toUpdate));
+        return Main.EXECUTOR_SERVICE.submit(new UpdateDocumentCallable(this.mongoCollection, key, value, toUpdate));
     }
+
+    /**
+     * Find synchronously documents from database
+     *
+     * @param key find by key
+     * @param value
+     * @return found document from the database
+     */
 
     public Document findDocumentSync(String key, String value) {
         return this.mongoCollection.find(Filters.eq(key, value)).first();
     }
+
+    /**
+     * Get all documents from collection synchronously
+     *
+     * @return all documents from collection
+     */
 
     public List<Document> getDocumentsFromCollectionSync() {
         List<Document> documents = new ArrayList<>();
@@ -56,6 +128,14 @@ public class MongoDB {
 
         return documents;
     }
+
+    /**
+     * Update single documents from the database synchronously
+     *
+     * @param key find by key
+     * @param value find value with key
+     * @param toUpdate document to update
+     */
 
     public void updateDocumentSync(String key, String value, Document toUpdate) {
         this.mongoCollection.replaceOne(Filters.eq(key, value), toUpdate);

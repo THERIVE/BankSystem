@@ -20,23 +20,22 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void handleJoin(PlayerJoinEvent event) {
-        //INITIALIZE PLAYER
         Player player = event.getPlayer();
-        BankPlayer bankPlayer = BankPlayer.findByUuid(player.getUniqueId());
 
-        //INITIALIZE AND SET SCOREBOARD
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Team money = scoreboard.registerNewTeam("money");
-        money.setPrefix("§aGuthaben§8: §7");
-        money.setSuffix("§7" + bankPlayer.getMoney() + " Euro");
-        money.addEntry(ChatColor.RED.toString());
+        BankPlayer.findByUuid(player.getUniqueId(), bankPlayer -> {
+            Scoreboard scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+            Team money = scoreboard.registerNewTeam("money");
+            money.setPrefix("§aGuthaben§8: §7");
+            money.setSuffix("§7" + bankPlayer.getMoney() + " Euro");
+            money.addEntry(ChatColor.RED.toString());
 
-        Objective objective = scoreboard.registerNewObjective("scoreboard", "dummy",
-                ChatColor.YELLOW + player.getName());
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.getScore(ChatColor.AQUA.toString()).setScore(1);
-        objective.getScore(ChatColor.RED.toString()).setScore(0);
+            Objective objective = scoreboard.registerNewObjective("scoreboard", "dummy",
+                    ChatColor.YELLOW + player.getName());
+            objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+            objective.getScore(ChatColor.AQUA.toString()).setScore(1);
+            objective.getScore(ChatColor.RED.toString()).setScore(0);
 
-        player.setScoreboard(scoreboard);
+            player.setScoreboard(scoreboard);
+        });
     }
 }

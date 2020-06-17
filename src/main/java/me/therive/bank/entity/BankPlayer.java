@@ -4,7 +4,8 @@ import me.therive.bank.Main;
 import org.bson.Document;
 
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 public class BankPlayer {
 
@@ -43,6 +44,12 @@ public class BankPlayer {
         return uuid;
     }
 
+    /**
+     *
+     * @param uuid UUID from Player
+     * @return new created bankplayer
+     */
+
     public static BankPlayer createBankPlayer(UUID uuid) {
         Document document = new Document("uuid", String.valueOf(uuid));
         document.append("money", 0.0D);
@@ -55,27 +62,29 @@ public class BankPlayer {
         return bankPlayer;
     }
 
-    public static BankPlayer findByUuid(UUID uuid) {
+    /**
+     *
+     * @param uuid UUID from Player
+     * @return found bankplayer from the database
+     */
+
+    public static void findByUuid(UUID uuid, Consumer<BankPlayer> consumer) {
         if (Main.getInstance().bankPlayers.containsKey(uuid)) {
-            return Main.getInstance().bankPlayers.get(uuid);
+            consumer.accept(Main.getInstance().bankPlayers.get(uuid));
+            return;
         }
 
-        Document document = null;
-        try {
-            document = Main.getInstance().mongoDB.findDocumentAsync("uuid", String.valueOf(uuid)).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
+        CompletableFuture<Document> completableFuture =
+                Main.getInstance().mongoDB.findDocumentAsync("uuid", String.valueOf(uuid));
 
-        if (document == null) {
-            return createBankPlayer(uuid);
-        }
+        completableFuture.thenApplyAsync(document -> {
+            if (document == null) {
+                return createBankPlayer(uuid);
+            }
 
-        BankPlayer bankPlayer = new BankPlayer(uuid, document.getDouble("money"));
-        Main.getInstance().bankPlayers.put(uuid, bankPlayer);
-
-        return bankPlayer;
+            BankPlayer bankPlayer = new BankPlayer(uuid, document.getDouble("money"));
+            Main.getInstance().bankPlayers.put(uuid, bankPlayer);
+            return bankPlayer;
+        }).thenAcceptAsync(consumer);
     }
 }
