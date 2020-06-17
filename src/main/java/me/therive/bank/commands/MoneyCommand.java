@@ -26,22 +26,22 @@ public class MoneyCommand implements CommandExecutor {
         if (args.length == 1) {
             UUID uuid = UUIDFetcher.getUUID(args[0]);
             if (uuid == null) {
-                sender.sendMessage(plugin.PREFIX + "§cSpieler wurde nicht gefunden!");
+                sender.sendMessage(plugin.getPrefix() + "§cSpieler wurde nicht gefunden!");
                 return false;
             }
             String name = UUIDFetcher.getName(uuid);
             if (name == null) {
-                sender.sendMessage(plugin.PREFIX + "§cSpieler wurde nicht gefunden!");
+                sender.sendMessage(plugin.getPrefix() + "§cSpieler wurde nicht gefunden!");
                 return false;
             }
 
             BankPlayer.findByUuid(uuid, bankPlayer -> {
                 if (bankPlayer == null) {
-                    sender.sendMessage(plugin.PREFIX + "§cSpieler wurde nicht gefunden!");
+                    sender.sendMessage(plugin.getPrefix() + "§cSpieler wurde nicht gefunden!");
                     return;
                 }
 
-                sender.sendMessage(plugin.PREFIX + "§7Der Kontostand von §e" + name + "§7 beträgt §a" +
+                sender.sendMessage(plugin.getPrefix() + "§7Der Kontostand von §e" + name + "§7 beträgt §a" +
                         bankPlayer.getMoney() + " Euro§7!");
                 return;
             });
@@ -49,18 +49,18 @@ public class MoneyCommand implements CommandExecutor {
         } else if (args.length == 3) {
             UUID uuid = UUIDFetcher.getUUID(args[1]);
             if (uuid == null) {
-                sender.sendMessage(plugin.PREFIX + "§cSpieler wurde nicht gefunden!");
+                sender.sendMessage(plugin.getPrefix() + "§cSpieler wurde nicht gefunden!");
                 return false;
             }
             String name = UUIDFetcher.getName(uuid);
             if (name == null) {
-                sender.sendMessage(plugin.PREFIX + "§cSpieler wurde nicht gefunden!");
+                sender.sendMessage(plugin.getPrefix() + "§cSpieler wurde nicht gefunden!");
                 return false;
             }
 
             BankPlayer.findByUuid(uuid, bankPlayer -> {
                 if (bankPlayer == null) {
-                    sender.sendMessage(plugin.PREFIX + "§cSpieler wurde nicht gefunden!");
+                    sender.sendMessage(plugin.getPrefix() + "§cSpieler wurde nicht gefunden!");
                     return;
                 }
 
@@ -68,7 +68,7 @@ public class MoneyCommand implements CommandExecutor {
                 try {
                     money = Double.parseDouble(args[2]);
                 } catch (NumberFormatException nfe) {
-                    sender.sendMessage(plugin.PREFIX + "§cEs wurde kein korrekter Wert angegeben!");
+                    sender.sendMessage(plugin.getPrefix() + "§cEs wurde kein korrekter Wert angegeben!");
                     return;
                 }
 
@@ -77,7 +77,7 @@ public class MoneyCommand implements CommandExecutor {
                     bankPlayer.update();
                     updatePlayerScoreboard(uuid, bankPlayer);
 
-                    sender.sendMessage(plugin.PREFIX + "§7Der Spieler §e" + name + "§7" +
+                    sender.sendMessage(plugin.getPrefix() + "§7Der Spieler §e" + name + "§7" +
                             " hat nun §a" + bankPlayer.getMoney() + " Euro §7!");
                     return;
                 } else if (args[0].equalsIgnoreCase("remove")) {
@@ -85,7 +85,7 @@ public class MoneyCommand implements CommandExecutor {
                     bankPlayer.update();
                     updatePlayerScoreboard(uuid, bankPlayer);
 
-                    sender.sendMessage(plugin.PREFIX + "§7Der Spieler §e" + name + "§7" +
+                    sender.sendMessage(plugin.getPrefix() + "§7Der Spieler §e" + name + "§7" +
                             " hat nun §a" + bankPlayer.getMoney() + " Euro §7!");
                     return;
                 } else if (args[0].equalsIgnoreCase("set")) {
@@ -93,20 +93,20 @@ public class MoneyCommand implements CommandExecutor {
                     bankPlayer.update();
                     updatePlayerScoreboard(uuid, bankPlayer);
 
-                    sender.sendMessage(plugin.PREFIX + "§7Der Spieler §e" + name + "§7" +
+                    sender.sendMessage(plugin.getPrefix() + "§7Der Spieler §e" + name + "§7" +
                             " hat nun §a" + bankPlayer.getMoney() + " Euro §7!");
                     return;
                 } else {
-                    sender.sendMessage(plugin.PREFIX + "§7Verwende§8: §e/money <name> §8| §7Kontostand einsehen");
-                    sender.sendMessage(plugin.PREFIX + "§7Verwende§8: §e/money <add|remove|set> <name>" +
+                    sender.sendMessage(plugin.getPrefix() + "§7Verwende§8: §e/money <name> §8| §7Kontostand einsehen");
+                    sender.sendMessage(plugin.getPrefix() + "§7Verwende§8: §e/money <add|remove|set> <name>" +
                             " <money> §8| §7Kontostand verwalten");
                     return;
                 }
             });
             return true;
         } else {
-            sender.sendMessage(plugin.PREFIX + "§7Verwende§8: §e/money <name> §8| §7Kontostand einsehen");
-            sender.sendMessage(plugin.PREFIX + "§7Verwende§8: §e/money <add|remove|set> <name>" +
+            sender.sendMessage(plugin.getPrefix() + "§7Verwende§8: §e/money <name> §8| §7Kontostand einsehen");
+            sender.sendMessage(plugin.getPrefix() + "§7Verwende§8: §e/money <add|remove|set> <name>" +
                     " <money> §8| §7Kontostand verwalten");
             return false;
         }

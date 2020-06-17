@@ -21,7 +21,7 @@ public class BankPlayer {
         Document toUpdate = new Document("uuid", String.valueOf(uuid));
         toUpdate.append("money", money);
 
-        Main.getInstance().mongoDB.updateDocumentAsync("uuid", String.valueOf(uuid), toUpdate);
+        Main.getInstance().getMongoDB().updateDocumentAsync("uuid", String.valueOf(uuid), toUpdate);
     }
 
     public void addMoney(Double toAdd) {
@@ -54,10 +54,10 @@ public class BankPlayer {
         Document document = new Document("uuid", String.valueOf(uuid));
         document.append("money", 0.0D);
 
-        Main.getInstance().mongoDB.insertDocumentAsync(document);
+        Main.getInstance().getMongoDB().insertDocumentAsync(document);
 
         BankPlayer bankPlayer = new BankPlayer(uuid, 0.0D);
-        Main.getInstance().bankPlayers.put(uuid, bankPlayer);
+        Main.getInstance().getBankPlayers().put(uuid, bankPlayer);
 
         return bankPlayer;
     }
@@ -69,13 +69,13 @@ public class BankPlayer {
      */
 
     public static void findByUuid(UUID uuid, Consumer<BankPlayer> consumer) {
-        if (Main.getInstance().bankPlayers.containsKey(uuid)) {
-            consumer.accept(Main.getInstance().bankPlayers.get(uuid));
+        if (Main.getInstance().getBankPlayers().containsKey(uuid)) {
+            consumer.accept(Main.getInstance().getBankPlayers().get(uuid));
             return;
         }
 
         CompletableFuture<Document> completableFuture =
-                Main.getInstance().mongoDB.findDocumentAsync("uuid", String.valueOf(uuid));
+                Main.getInstance().getMongoDB().findDocumentAsync("uuid", String.valueOf(uuid));
 
         completableFuture.thenApplyAsync(document -> {
             if (document == null) {
@@ -83,7 +83,7 @@ public class BankPlayer {
             }
 
             BankPlayer bankPlayer = new BankPlayer(uuid, document.getDouble("money"));
-            Main.getInstance().bankPlayers.put(uuid, bankPlayer);
+            Main.getInstance().getBankPlayers().put(uuid, bankPlayer);
             return bankPlayer;
         }).thenAcceptAsync(consumer);
     }

@@ -18,14 +18,14 @@ import java.util.concurrent.Executors;
 public class Main extends JavaPlugin {
 
     private MongoConnection mongoConnection;
-    public MongoDB mongoDB;
+    private MongoDB mongoDB;
 
-    public final static ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
+    private final static ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
     private static Main instance;
 
-    public final String PREFIX = "§8[§6Bank§8] §7";
+    private final String PREFIX = "§8[§6Bank§8] §7";
 
-    public HashMap<UUID, BankPlayer> bankPlayers;
+    private HashMap<UUID, BankPlayer> bankPlayers;
 
     @Override
     public void onEnable() {
@@ -60,7 +60,27 @@ public class Main extends JavaPlugin {
         this.getCommand("pay").setExecutor(new PayCommand(this));
     }
 
+    public MongoConnection getMongoConnection() {
+        return mongoConnection;
+    }
+
+    public MongoDB getMongoDB() {
+        return mongoDB;
+    }
+
+    public static ExecutorService getExecutorService() {
+        return EXECUTOR_SERVICE;
+    }
+
     public static Main getInstance() {
         return instance;
+    }
+
+    public String getPrefix() {
+        return PREFIX;
+    }
+
+    public HashMap<UUID, BankPlayer> getBankPlayers() {
+        return bankPlayers;
     }
 }

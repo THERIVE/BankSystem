@@ -30,24 +30,24 @@ public class PayCommand implements CommandExecutor {
             BankPlayer.findByUuid(player.getUniqueId(), bankPlayer -> {
                 if (args.length == 2) {
                     if (player.getName().equalsIgnoreCase(args[0])) {
-                        player.sendMessage(plugin.PREFIX + "§cDu kannst dir selber kein Geld überweisen!");
+                        player.sendMessage(plugin.getPrefix() + "§cDu kannst dir selber kein Geld überweisen!");
                         return;
                     }
 
                     UUID uuid = UUIDFetcher.getUUID(args[0]);
                     if (uuid == null) {
-                        player.sendMessage(plugin.PREFIX + "§cSpieler wurde nicht gefunden!");
+                        player.sendMessage(plugin.getPrefix() + "§cSpieler wurde nicht gefunden!");
                         return;
                     }
                     String name = UUIDFetcher.getName(uuid);
                     if (name == null) {
-                        player.sendMessage(plugin.PREFIX + "§cSpieler wurde nicht gefunden!");
+                        player.sendMessage(plugin.getPrefix() + "§cSpieler wurde nicht gefunden!");
                         return;
                     }
 
                     BankPlayer.findByUuid(uuid, targetBankPlayer -> {
                         if (targetBankPlayer == null) {
-                            player.sendMessage(plugin.PREFIX + "§cSpieler wurde nicht gefunden!");
+                            player.sendMessage(plugin.getPrefix() + "§cSpieler wurde nicht gefunden!");
                             return;
                         }
 
@@ -55,23 +55,23 @@ public class PayCommand implements CommandExecutor {
                         try {
                             money = Double.parseDouble(args[1]);
                         } catch (NumberFormatException nfe) {
-                            player.sendMessage(plugin.PREFIX + "§cEs wurde kein korrekter Wert angegeben!");
+                            player.sendMessage(plugin.getPrefix() + "§cEs wurde kein korrekter Wert angegeben!");
                             return;
                         }
 
                         if (money > bankPlayer.getMoney()) {
-                            player.sendMessage(plugin.PREFIX + "§cDu hast nicht genügend Geld," +
+                            player.sendMessage(plugin.getPrefix() + "§cDu hast nicht genügend Geld," +
                                     " um diesen Betrag zu überweisen!");
                             return;
                         }
 
                         Player target = Bukkit.getPlayer(uuid);
                         if (target != null) {
-                            target.sendMessage(plugin.PREFIX + "§7Du hast von §e" + player.getName() + "§a "
+                            target.sendMessage(plugin.getPrefix() + "§7Du hast von §e" + player.getName() + "§a "
                                     + money + " Euro §7erhalten!");
                         }
 
-                        player.sendMessage(plugin.PREFIX + "§7Du hast §a" + money + " Euro §7an §e"
+                        player.sendMessage(plugin.getPrefix() + "§7Du hast §a" + money + " Euro §7an §e"
                                 + name + "§7 überwiesen!");
                         bankPlayer.removeMoney(money);
                         bankPlayer.update();
@@ -84,13 +84,13 @@ public class PayCommand implements CommandExecutor {
                     });
                     return;
                 } else {
-                    player.sendMessage(plugin.PREFIX + "§7Verwende§8: §e/pay <name> <money> §8| §7Geld überweisen");
+                    player.sendMessage(plugin.getPrefix() + "§7Verwende§8: §e/pay <name> <money> §8| §7Geld überweisen");
                     return;
                 }
             });
             return true;
         } else {
-            sender.sendMessage(plugin.PREFIX + "§cDieser Befehl ist nur für Spieler verfügbar!");
+            sender.sendMessage(plugin.getPrefix() + "§cDieser Befehl ist nur für Spieler verfügbar!");
             return false;
         }
     }
