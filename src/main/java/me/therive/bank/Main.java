@@ -18,9 +18,11 @@ import java.util.concurrent.Executors;
 public class Main extends JavaPlugin {
 
     private MongoConnection mongoConnection;
+
     private MongoDB mongoDB;
 
     private final static ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
+
     private static Main instance;
 
     private final String PREFIX = "§8[§6Bank§8] §7";
@@ -83,4 +85,5 @@ public class Main extends JavaPlugin {
     public HashMap<UUID, BankPlayer> getBankPlayers() {
         return bankPlayers;
     }
+
 }
