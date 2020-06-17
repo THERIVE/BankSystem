@@ -11,6 +11,7 @@ public class FindDocumentCallable implements Callable<Document> {
     private MongoCollection<Document> mongoCollection;
 
     private String key;
+
     private String value;
 
     public FindDocumentCallable(MongoCollection<Document> mongoCollection, String key, String value) {

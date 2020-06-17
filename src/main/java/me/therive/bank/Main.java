@@ -62,6 +62,11 @@ public class Main extends JavaPlugin {
         this.getCommand("pay").setExecutor(new PayCommand(this));
     }
 
+    @Override
+    public void onDisable() {
+        mongoConnection.getClient().close();
+    }
+
     public MongoConnection getMongoConnection() {
         return mongoConnection;
     }

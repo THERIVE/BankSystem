@@ -10,6 +10,7 @@ import java.util.function.Consumer;
 public class BankPlayer {
 
     private UUID uuid;
+
     private Double money;
 
     public BankPlayer(UUID uuid, Double money) {

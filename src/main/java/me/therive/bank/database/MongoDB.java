@@ -19,7 +19,9 @@ import java.util.concurrent.Future;
 public class MongoDB {
 
     private MongoConnection mongoConnection;
+
     private MongoDatabase mongoDatabase;
+
     private MongoCollection<Document> mongoCollection;
 
     public MongoDB(MongoConnection mongoConnection, MongoDatabase mongoDatabase, MongoCollection mongoCollection) {

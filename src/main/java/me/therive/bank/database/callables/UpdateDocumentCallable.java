@@ -11,8 +11,11 @@ public class UpdateDocumentCallable implements Callable<Document> {
     private MongoCollection<Document> mongoCollection;
 
     private String key;
+
     private String value;
+
     private Document document;
+
 
     public UpdateDocumentCallable(MongoCollection<Document> mongoCollection, String key, String value, Document document) {
         this.mongoCollection = mongoCollection;
