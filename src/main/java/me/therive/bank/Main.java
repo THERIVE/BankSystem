@@ -33,9 +33,9 @@ public class Main extends JavaPlugin {
          * INITIALIZE DATABASE
          */
         mongoConnection = new MongoConnection(
-                "88.99.62.231",
+                "127.0.0.1",
                 "admin",
-                "T6pZUjrRqz0l3LeHx65PQsAjn2uEyF8fmzgJHxCzvUHFtNMyqWAPlqDmScOyweSZ",
+                "123456",
                 "admin");
         mongoDB = new MongoDB(mongoConnection, mongoConnection.getDatabase("THERIVE"),
                 mongoConnection.getCollection("THERIVE", "BankSystem"));
